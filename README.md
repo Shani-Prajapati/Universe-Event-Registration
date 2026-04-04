@@ -38,8 +38,8 @@ Make sure you have these installed:
 ### Step 1 — Clone or Download the Project
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/universe-college-events.git
-cd universe-college-events
+git clone https://github.com/Shani-Prajapati/Universe-Event-Registration.git
+cd Universe-Event-Registration
 ```
 
 ### Step 2 — Install Node.js Dependencies
