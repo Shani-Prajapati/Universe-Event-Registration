@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniVerse — College Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="logo">UNI<span>VERSE</span></div>
+    <div class="nav-right">
+      <div class="user-avatar" id="userAvatar">JD</div>
+      <button class="btn btn-ghost" onclick="openModal('loginModal')" id="loginBtn">Sign In</button>
+      <button class="btn btn-primary" onclick="openModal('signupModal')" id="signupBtn">Join Now</button>
+      <button class="btn btn-ghost" onclick="logout()" id="logoutBtn" style="display:none;color:#ff6b6b;border-color:rgba(255,107,107,0.2)">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-tag">✦ 2025 Event Season is Live</div>
+    <h1>DISCOVER <span class="accent">CAMPUS</span><br>EVENTS</h1>
+    <p>From hackathons to cultural fests — find your tribe, register in seconds, and make memories that last a lifetime.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})">Browse Events</button>
+      <button class="btn btn-ghost btn-lg" onclick="openModal('loginModal')">Sign In →</button>
+    </div>
+    <div class="scroll-hint">scroll</div>
+  </section>
+
+  <!-- ── STATS BAR ── -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">24+</div><div class="stat-label">Events</div></div>
+    <div class="stat"><div class="stat-num">3.2K</div><div class="stat-label">Students</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Departments</div></div>
+    <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Satisfaction</div></div>
+  </div>
+
+  <!-- ── EVENTS SECTION ── -->
+  <section class="section" id="events">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// upcoming events</div>
+        <div class="section-title">WHAT'S HAPPENING</div>
+      </div>
+      <div class="filter-tabs">
+        <button class="tab active" onclick="filterEvents('all', this)">All</button>
+        <button class="tab" onclick="filterEvents('tech', this)">Tech</button>
+        <button class="tab" onclick="filterEvents('cultural', this)">Cultural</button>
+        <button class="tab" onclick="filterEvents('workshop', this)">Workshop</button>
+        <button class="tab" onclick="filterEvents('sports', this)">Sports</button>
+      </div>
+    </div>
+    <div class="events-grid" id="eventsGrid">
+      <!-- Cards rendered by script.js -->
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    &copy; 2025 UniVerse — College Event Management System &nbsp;·&nbsp; Built with ♥ for Google Cloud Capstone
+  </footer>
+
+  <!-- ─────────── MODALS ─────────── -->
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-close" onclick="closeModal('loginModal')">✕</div>
+      <div class="modal-icon">🔑</div>
+      <div class="modal-title">WELCOME BACK</div>
+      <div class="modal-sub">Sign in to your UniVerse account</div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="student@university.ac.in">
+        <div class="input-hint">Use your institutional email</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••••">
+        <div class="input-hint">Min 8 characters</div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;padding:.85rem;font-size:.9rem;margin-top:.5rem;border-radius:10px" onclick="doLogin()">Sign In →</button>
+
+      <div class="divider">or continue with</div>
+      <button class="social-btn">🎓 &nbsp; Sign in with Google Workspace</button>
+
+      <div class="switch-auth">Don't have an account? <a onclick="switchModal('loginModal','signupModal')">Create one</a></div>
+    </div>
+  </div>
+
+  <!-- SIGNUP MODAL -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-close" onclick="closeModal('signupModal')">✕</div>
+      <div class="modal-icon">🎓</div>
+      <div class="modal-title">JOIN UNIVERSE</div>
+      <div class="modal-sub">Create your student account in seconds</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="signupFirst" placeholder="Arjun">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="signupLast" placeholder="Mehta">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="signupEmail" placeholder="student@university.ac.in">
+      </div>
+      <div class="form-group">
+        <label class="form-label">College ID</label>
+        <input class="form-input" type="text" id="signupCollegeId" placeholder="KU2507U0210">
+        <div class="input-hint">Format: KU + Year + Dept + Roll (e.g. KU2507U0210)</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="signupPassword" placeholder="Create a strong password">
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;padding:.85rem;font-size:.9rem;border-radius:10px" onclick="doSignup()">Create Account →</button>
+      <div class="switch-auth">Already have an account? <a onclick="switchModal('signupModal','loginModal')">Sign in</a></div>
+    </div>
+  </div>
+
+  <!-- REGISTER MODAL -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal">
+      <div class="modal-close" onclick="closeModal('registerModal')">✕</div>
+
+      <div id="registerForm">
+        <div class="modal-icon">🎟️</div>
+        <div class="modal-title">REGISTER</div>
+        <div class="modal-sub">Secure your spot for this event</div>
+
+        <div class="event-preview" id="regEventPreview">
+          <div class="event-preview-icon" id="regEventIcon">🎉</div>
+          <div>
+            <div class="event-preview-name" id="regEventName">Event Name</div>
+            <div class="event-preview-date" id="regEventDate">Date & Venue</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="regName" placeholder="Your full name">
+          <div class="input-hint">As per your college ID card</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input class="form-input" type="tel" id="regMobile" placeholder="+91 98765 43210" maxlength="13">
+          <div class="input-hint">10-digit mobile number</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">College ID</label>
+          <input class="form-input" type="text" id="regCollegeId" placeholder="KU2507U0210">
+          <div class="input-hint">Format: KU + Year + Dept + Roll</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <select class="form-input" id="regDept">
+            <option value="" disabled selected>Select your department</option>
+            <option>Computer Science & Engineering</option>
+            <option>Information Technology</option>
+            <option>Electronics & Communication</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>BBA / MBA</option>
+            <option>Science (BSc / MSc)</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;padding:.85rem;font-size:.9rem;border-radius:10px" onclick="submitRegistration()">Confirm Registration 🎟️</button>
+      </div>
+
+      <div class="success-state" id="successState">
+        <div class="success-checkmark">✓</div>
+        <div class="success-title">YOU'RE IN!</div>
+        <div class="success-sub">Your registration has been confirmed and saved to the database.</div>
+        <div class="ticket-id" id="ticketId">#TKT-000000</div>
+        <br><br>
+        <button class="btn btn-ghost" style="width:100%;padding:.75rem;border-radius:10px" onclick="closeModal('registerModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✓</span>
+    <span id="toastMsg">Done!</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
