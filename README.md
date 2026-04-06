@@ -6,7 +6,7 @@
   <a href="https://shani-prajapati.github.io/Universe-Event-Registration/" target="_blank">
     <img src="https://img.shields.io/badge/Click%20To%20Open-UniVerse%20Live-00758f?style=for-the-badge&logo=google-cloud&logoColor=white" alt="Click to Open">
   </a>
----
+
 
 ## 📁 Project Structure
 
