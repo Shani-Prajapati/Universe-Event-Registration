@@ -25,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve frontend static files from /public folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // ── DATABASE CONNECTION POOL ────────────────────────────────
 const db = mysql.createPool({
@@ -253,12 +253,12 @@ app.get('/api/registrations/:userId', async (req, res) => {
 
 // ── CATCH-ALL: Serve index.html for any other route ────────
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ── START SERVER ────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`\n🚀 UniVerse server running at http://localhost:${PORT}`);
-  console.log(`📁 Serving frontend from: ./public/`);
+  console.log(`📁 Serving frontend from: Root Directory`); // Updated this line
   console.log(`🗄️  Connected to MySQL database: ${process.env.DB_NAME || 'universe_db'}\n`);
 });
