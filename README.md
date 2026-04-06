@@ -9,10 +9,9 @@
 
 ```
 universe-project/
-├── public/
-│   ├── index.html      ← Frontend HTML (UI structure)
-│   ├── style.css       ← All CSS styles (dark theme)
-│   └── script.js       ← Frontend JavaScript (API calls)
+├── index.html          ← Frontend HTML (UI structure)
+├── style.css           ← All CSS styles (dark theme)
+├── script.js           ← Frontend JavaScript (API calls)
 ├── server.js           ← Node.js + Express backend (API)
 ├── database.sql        ← MySQL schema + seed data
 ├── package.json        ← Node.js dependencies
@@ -103,7 +102,7 @@ You should see:
 
 ```
 🚀 UniVerse server running at http://localhost:3000
-📁 Serving frontend from: ./public/
+📁 Serving frontend from: Root Directory
 ✅ MySQL connected successfully
 ```
 
@@ -178,7 +177,7 @@ To deploy this to Google Cloud Platform:
 |---|---|
 | MySQL on laptop | **Cloud SQL (MySQL)** |
 | Node.js `server.js` | **Cloud Run** (containerized) |
-| Static files in `/public` | **Cloud CDN / Firebase Hosting** |
+| Static files (Root) | Firebase Hosting / Cloud Storage |
 | `.env` config | **Secret Manager** |
 | Manual scaling | **Auto-scaling via Cloud Run** |
 
@@ -187,7 +186,7 @@ Steps:
 2. Create Cloud SQL instance (MySQL 8)
 3. Deploy `server.js` to Cloud Run with Docker
 4. Set environment variables in Cloud Run settings
-5. Update `API` URL in `script.js` to your Cloud Run URL
+5. Update the API_URL variable inside script.js to your Cloud Run service URL.
 
 ---
 
