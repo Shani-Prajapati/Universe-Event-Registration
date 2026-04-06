@@ -362,7 +362,6 @@ const STATIC_EVENTS = [
 
 
 async function showMyRegistrations() {
-  // Use currentUser variable directly since it is already set globally
   if (!currentUser) return alert("Please sign in first!");
 
   // Toggle sections
@@ -370,32 +369,32 @@ async function showMyRegistrations() {
   document.getElementById('myRegistrationsSection').classList.remove('hidden');
 
   try {
-    // Use currentUser.id directly
     const response = await fetch(`${API}/registrations/${currentUser.id}`);
     const data = await response.json();
-    
-    // ... keep the rest of your rendering code the same ... 
+
     const grid = document.getElementById('myRegistrationsGrid');
-    grid.innerHTML = ''; // Clear previous data
+    grid.innerHTML = ''; 
 
     if (data.registrations.length === 0) {
-      grid.innerHTML = '<p class="section-sub">You haven\'t registered for any events yet.</p>';
-      return;
+      grid.innerHTML = '<p class="section-sub" style="grid-column:1/-1;text-align:center;">You haven\'t registered for any events yet.</p>';
+    } else {
+      data.registrations.forEach(reg => {
+        grid.innerHTML += `
+          <div class="event-card">
+            <div class="event-badge">${reg.event_date}</div>
+            <div class="event-icon">${reg.icon}</div>
+            <h3 class="event-name">${reg.event_title}</h3>
+            <p class="event-venue">📍 ${reg.venue}</p>
+            <div class="ticket-id" style="margin-top:15px; color:#00d2ff; font-family:'JetBrains Mono'; font-size:0.8rem;">
+              TICKET: ${reg.ticket_id}
+            </div>
+          </div>`;
+      });
     }
 
-    data.registrations.forEach(reg => {
-      grid.innerHTML += `
-        <div class="event-card">
-          <div class="event-badge">${reg.event_date}</div>
-          <div class="event-icon">${reg.icon}</div>
-          <h3 class="event-name">${reg.event_title}</h3>
-          <p class="event-venue">📍 ${reg.venue}</p>
-          <div class="ticket-id" style="margin-top:15px; color:#00d2ff; font-family:'JetBrains Mono'; font-size:0.8rem;">
-            TICKET: ${reg.ticket_id}
-          </div>
-        </div>
-      `;
-    });
+    // --- ADD THIS LINE HERE ---
+    document.getElementById('myRegistrationsSection').scrollIntoView({ behavior: 'smooth' });
+
   } catch (err) {
     console.error("Fetch error:", err);
   }
