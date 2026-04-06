@@ -2,6 +2,11 @@
 
 > Google Cloud Digital Leader — Capstone Project  
 > A full-stack web application for college event registration built with Node.js, Express, and MySQL.
+> <p align="center">
+  <a href="https://github.com/Shani-Prajapati/Universe-Event-Registration" target="_blank">
+    <img src="https://img.shields.io/badge/Launch-Show%20UniVerse-00758f?style=for-the-badge&logo=google-cloud&logoColor=white" alt="Show UniVerse">
+  </a>
+</p>
 
 ---
 
