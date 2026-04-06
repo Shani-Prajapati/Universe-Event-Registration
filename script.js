@@ -145,9 +145,14 @@ async function doLogin() {
 
     if (data.success) {
       currentUser = data.user;
+      // Save to BOTH storage types to prevent the alert error
+      sessionStorage.setItem('universe_user', JSON.stringify(data.user));
+      localStorage.setItem('user', JSON.stringify(data.user)); 
+
       closeModal('loginModal');
       updateAuthUI();
       showToast('✓', `Welcome back, ${currentUser.full_name.split(' ')[0]}!`);
+      document.getElementById('myRegBtn').style.display = 'block'; 
     } else {
       showToast('❌', data.message || 'Invalid email or password');
     }
@@ -204,6 +209,9 @@ function logout() {
   currentUser = null;
   updateAuthUI();
   showToast('👋', 'Signed out successfully');
+  localStorage.removeItem('user');
+  document.getElementById('myRegBtn').style.display = 'none'; // HIDE THE BUTTON
+  location.reload(); 
 }
 
 // ============================================================
@@ -214,6 +222,10 @@ function checkSession() {
   if (saved) {
     currentUser = JSON.parse(saved);
     updateAuthUI();
+    // Ensure the button shows up after a page refresh
+    if (document.getElementById('myRegBtn')) {
+      document.getElementById('myRegBtn').style.display = 'block';
+    }
   }
 }
 
@@ -347,3 +359,50 @@ const STATIC_EVENTS = [
   { id:8, icon:'🌱', title:'STARTUP PITCH', category:'tech', event_date:'May 22', venue:'Innovation Hub', description:'Pitch your startup idea to real investors. Top 3 ideas get incubation support.', color:'#06d6a0', max_seats:60, filled_seats:44, badges: JSON.stringify([{label:'Tech',color:'rgba(74,158,255,0.2)',text:'#4a9eff'},{label:'Prizes',color:'rgba(6,214,160,0.15)',text:'#06d6a0'}]) },
   { id:9, icon:'📸', title:'PHOTO WALK', category:'cultural', event_date:'May 18', venue:'Campus & City Tour', description:'Guided photography walk around campus and heritage streets with workshops.', color:'#ff6b6b', max_seats:25, filled_seats:18, badges: JSON.stringify([{label:'Cultural',color:'rgba(255,107,107,0.2)',text:'#ff6b6b'}]) },
 ];
+
+
+async function showMyRegistrations() {
+  // Use currentUser variable directly since it is already set globally
+  if (!currentUser) return alert("Please sign in first!");
+
+  // Toggle sections
+  document.getElementById('events').classList.add('hidden');
+  document.getElementById('myRegistrationsSection').classList.remove('hidden');
+
+  try {
+    // Use currentUser.id directly
+    const response = await fetch(`${API}/registrations/${currentUser.id}`);
+    const data = await response.json();
+    
+    // ... keep the rest of your rendering code the same ... 
+    const grid = document.getElementById('myRegistrationsGrid');
+    grid.innerHTML = ''; // Clear previous data
+
+    if (data.registrations.length === 0) {
+      grid.innerHTML = '<p class="section-sub">You haven\'t registered for any events yet.</p>';
+      return;
+    }
+
+    data.registrations.forEach(reg => {
+      grid.innerHTML += `
+        <div class="event-card">
+          <div class="event-badge">${reg.event_date}</div>
+          <div class="event-icon">${reg.icon}</div>
+          <h3 class="event-name">${reg.event_title}</h3>
+          <p class="event-venue">📍 ${reg.venue}</p>
+          <div class="ticket-id" style="margin-top:15px; color:#00d2ff; font-family:'JetBrains Mono'; font-size:0.8rem;">
+            TICKET: ${reg.ticket_id}
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
+}
+
+// Function to go back to the main events
+function hideMyRegistrations() {
+  document.getElementById('myRegistrationsSection').classList.add('hidden');
+  document.getElementById('events').classList.remove('hidden');
+}
